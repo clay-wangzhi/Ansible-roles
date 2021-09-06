@@ -32,21 +32,21 @@
   delegate_to: "{{ mysql57_replication_master }}"
   register: master
   when: >
-    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave|failed))
+    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql57_replication_role == 'slave')
     and (mysql57_replication_master != '')
 
 - name: replication | Restart mysql service.
   systemd: state=restarted name={{ mysql57_servicename }}
   when: >
-    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave|failed))
+    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql57_replication_role == 'slave')
     and (mysql57_replication_master != '')
 
 - name: replication | Show master status.
   debug: var={{ master | to_json }}
   when: >
-    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave|failed))
+    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql57_replication_role == 'slave')
     and (mysql57_replication_master != '')
 
@@ -62,7 +62,7 @@
     config_file: "{{ mysql57_cnf }}"
   ignore_errors: True
   when: >
-    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave|failed))
+    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql57_replication_role == 'slave')
     and (mysql57_replication_master is defined and mysql57_replication_master != '')
     and mysql57_replication_mode == 'file'
@@ -78,7 +78,7 @@
     config_file: "{{ mysql57_cnf }}"
   ignore_errors: True
   when: >
-    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave|failed))
+    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql57_replication_role == 'slave')
     and (mysql57_replication_master is defined and mysql57_replication_master != '')
     and mysql57_replication_mode == 'gtid'
@@ -86,7 +86,7 @@
 - name: replication | Start replication.
   mysql_replication: mode=startslave config_file={{ mysql57_cnf }}
   when: >
-    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave|failed))
+    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql57_replication_role == 'slave')
     and (mysql57_replication_master != '')
    
@@ -95,7 +95,7 @@
   ignore_errors: true
   register: slave_status
   when: >
-    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave|failed))
+    ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql57_replication_role == 'slave')
     and (mysql57_replication_master != '')
 
